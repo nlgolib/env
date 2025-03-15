@@ -28,6 +28,9 @@ func (e *Environment) String() string {
 
 // Bool returns the environment variable as a boolean.
 func (e *Environment) Bool() bool {
+	if e.String() == "" {
+		return false
+	}
 	value, err := strconv.ParseBool(e.String())
 	if err != nil {
 		log.Fatalf("Environment variable %s is not a boolean", e.Key)
@@ -37,6 +40,9 @@ func (e *Environment) Bool() bool {
 
 // Int returns the environment variable as an integer.
 func (e *Environment) Int() int {
+	if e.String() == "" {
+		return 0
+	}
 	value, err := strconv.Atoi(e.String())
 	if err != nil {
 		log.Fatalf("Environment variable %s is not an integer", e.Key)
@@ -46,6 +52,9 @@ func (e *Environment) Int() int {
 
 // Float64 returns the environment variable as a float64.
 func (e *Environment) Float64() float64 {
+	if e.String() == "" {
+		return 0
+	}
 	value, err := strconv.ParseFloat(e.String(), 64)
 	if err != nil {
 		log.Fatalf("Environment variable %s is not a float64", e.Key)
@@ -54,7 +63,7 @@ func (e *Environment) Float64() float64 {
 }
 
 // JSON returns the environment variable as a JSON object.
-func (e Environment) JSON() any {
+func (e *Environment) JSON() any {
 	value := e.String()
 	if value == "" {
 		return nil
